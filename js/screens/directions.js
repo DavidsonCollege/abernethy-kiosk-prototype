@@ -150,9 +150,11 @@ class Screen extends DCLogic {
     const plates = [4, 3, 2, 1].map((n) => ({
       src: D.plates[o][n], top: D.tops[n], z: n * 2,
       op: n === F.activeLevel ? 1 : involved[n] ? 0.6 : 0.32,
+      // floors the route only passes scroll by gray, with no level tag or room labels
+      filter: involved[n] ? 'none' : 'grayscale(1)',
       alt: 'Level ' + n + ' floor plate'
     }));
-    const tags = [4, 3, 2, 1].map((n) => ({
+    const tags = [4, 3, 2, 1].filter((n) => involved[n]).map((n) => ({
       n,
       top: D.tops[n] + (o === 'S' ? D.PH - 132 : 18),
       color: n === F.activeLevel ? '#0F1012' : involved[n] ? '#4A484A' : '#B0ABAB'
@@ -277,7 +279,7 @@ Screen.prototype.template = function (v) {
       <section aria-label="3D route map" style="position: relative; width: 1240px; height: 724px; box-sizing: border-box; border-radius: 22px; overflow: hidden; background: #EFE9E3; border: 1px solid #D4CFCE">
         <div style="position: absolute; left: 0; top: 0; width: 1240px; height: 2231px; transform: translateY(${v.cam}px)">
           ${(v.plates || []).map((pl, $index) => html`
-            <img src=${pl.src} alt=${pl.alt} style="position: absolute; left: 0; top: ${pl.top}px; width: 1240px; height: 471px; display: block; opacity: ${pl.op}; z-index: ${pl.z}" />
+            <img src=${pl.src} alt=${pl.alt} style="position: absolute; left: 0; top: ${pl.top}px; width: 1240px; height: 471px; display: block; opacity: ${pl.op}; filter: ${pl.filter}; z-index: ${pl.z}" />
           `)}
           ${(v.tags || []).map((tg, $index) => html`
             <div style="position: absolute; left: 28px; top: ${tg.top}px; z-index: 30; display: flex; flex-direction: column; color: ${tg.color}; pointer-events: none">
