@@ -1,0 +1,139 @@
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('assets/fonts/inter-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('assets/fonts/inter-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('assets/fonts/inter-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('assets/fonts/inter-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('assets/fonts/inter-latin-800-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 900; font-display: swap; src: url('assets/fonts/inter-latin-900-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 400; font-display: swap; src: url('assets/fonts/libre-caslon-text-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Libre Caslon Text'; font-style: italic; font-weight: 400; font-display: swap; src: url('assets/fonts/libre-caslon-text-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 700; font-display: swap; src: url('assets/fonts/libre-caslon-text-latin-700-normal.woff2') format('woff2'); }
+:root {
+  --red: #D42121;
+  --black: #0F1012;
+  --white: #FFFFFF;
+  --sand: #E9DED3;
+  --taupe: #9F8B76;
+  --g1: #F9F5F2;
+  --g3: #D4CFCE;
+  --g6: #B0ABAB;
+  --g8: #8D898A;
+  --g10: #6A6869;
+  --g75: #4A484A;
+  --bar: 64px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: #17181A;
+  color: var(--white);
+  font-family: 'Inter', Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* ---- prototype chrome (outside the kiosk) ---- */
+.topbar {
+  height: var(--bar);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  background: var(--black);
+  border-bottom: 1px solid #2A2B2E;
+}
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand img { height: 26px; width: auto; display: block; }
+.brand .name { font-family: 'Libre Caslon Text', Georgia, serif; font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); background: var(--sand); padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
+.controls { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.seg { display: inline-flex; border: 1px solid #3A3B3F; border-radius: 999px; padding: 3px; gap: 2px; }
+.seg button, .tbtn {
+  font: 700 14px 'Inter', Helvetica, Arial, sans-serif;
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  min-height: 36px;
+  padding: 0 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.seg button[aria-pressed="true"] { background: var(--white); color: var(--black); }
+.tbtn { border: 1px solid #3A3B3F; }
+.tbtn[aria-pressed="true"] { background: var(--red); border-color: var(--red); }
+.seg button:focus-visible, .tbtn:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .brand .name { display: none; }
+  .brand img { height: 20px; }
+  .seg button, .tbtn { padding: 0 10px; font-size: 13px; }
+  .hide-sm { display: none; }
+}
+
+.stage {
+  height: calc(100% - var(--bar));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.bezel {
+  position: relative;
+  padding: 10px;
+  border-radius: 20px;
+  background: #050506;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), inset 0 0 0 1px #2A2B2E;
+  flex: none;
+}
+.screen { position: relative; overflow: hidden; border-radius: 8px; background: var(--g1); }
+.kiosk {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  color: var(--black);
+}
+
+/* ---- styles the kiosk screens shared on the canvas ---- */
+.kiosk a { color: inherit; text-decoration: none; }
+.kiosk a:hover { color: inherit; }
+.kiosk button { font-family: inherit; cursor: pointer; }
+.kiosk a:focus-visible, .kiosk button:focus-visible { outline: 4px solid #294878; outline-offset: 3px; }
+@keyframes yahpulse { 0% { transform: scale(0.6); opacity: 0.55; } 100% { transform: scale(2.3); opacity: 0; } }
+.yahring { animation: yahpulse 1.8s ease-out infinite; }
+.chips::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: reduce) { .yahring { animation: none; opacity: 0.25; } }
+
+/* ---- about panel ---- */
+.scrim { position: fixed; inset: 0; background: rgba(15, 16, 18, 0.72); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+.about {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--white);
+  color: var(--black);
+  border-radius: 18px;
+  padding: 28px 28px 24px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.about h2 { font-family: 'Libre Caslon Text', Georgia, serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 0 0 8px; }
+.about h3 { font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g10); margin: 20px 0 6px; }
+.about p, .about ul { margin: 0 0 10px; }
+.about ul { padding-left: 20px; }
+.about a { color: #294878; }
+.about .close { margin-top: 14px; font: 800 16px 'Inter', Helvetica, Arial, sans-serif; background: var(--black); color: var(--white); border: 0; border-radius: 999px; min-height: 48px; padding: 0 24px; cursor: pointer; }
+
+@media (max-width: 560px) {
+  .brand img, .badge { display: none; }
+  .topbar { gap: 8px; padding: 0 10px; }
+  .controls { margin-left: 0; width: 100%; justify-content: space-between; gap: 6px; }
+}
+.hint { display: none; }
+@media (max-width: 700px) and (orientation: portrait) {
+  .stage { flex-direction: column; gap: 14px; }
+  .hint { display: block; margin: 0; font-size: 14px; color: #B0ABAB; text-align: center; }
+}
