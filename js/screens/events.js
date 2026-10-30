@@ -16,12 +16,12 @@ class Screen extends DCLogic {
     const EV = [
       { day: 'Today', dayLong: 'Today, Tue Aug 31', time: '4:30 – 6:00 PM', title: '[Level 4 event title]', where: 'Event Space · Level 4', k: 'l4', blurb: '[Description from the College calendar listing.]' },
       { day: 'Today', dayLong: 'Today, Tue Aug 31', time: '7:00 – 8:00 PM', title: 'Silent Book Club', where: '[Room in the new building TBD]', k: 'lib', blurb: 'An hour of quiet reading together. Bring whatever you are reading, in any format. Tea and hot cocoa are on the library.' },
-      { day: 'Today', dayLong: 'Today, Tue Aug 31', time: '8:00 – 10:00 PM', title: 'Drop-in tutoring: Math, Science & Economics', where: 'Open Tutoring · Level 2', k: 'ctl', blurb: 'Free peer tutoring, no appointment needed.' },
+      { day: 'Today', dayLong: 'Today, Tue Aug 31', time: '8:00 – 10:00 PM', title: 'Drop-in tutoring: Math, Science & Economics', where: 'Open Tutoring · Level 2', to: '2-211', k: 'ctl', blurb: 'Free peer tutoring, no appointment needed.' },
       { day: 'Today', dayLong: 'Today, Tue Aug 31', time: '8:00 – 10:00 PM', title: 'Writing Center drop-in hours', where: 'Center for Teaching & Learning · Level 2', k: 'ctl', blurb: 'Bring a draft at any stage, in any subject.' },
-      { day: 'Wednesday, September 1', dayLong: 'Wed Sep 1', time: '12:00 – 1:00 PM', title: 'Faculty lunch: teaching with digital tools', where: 'CTL Classroom 222 · Level 2', k: 'ctl', blurb: 'A conversation hosted by the CTL and the Scholars Studio.' },
+      { day: 'Wednesday, September 1', dayLong: 'Wed Sep 1', time: '12:00 – 1:00 PM', title: 'Faculty lunch: teaching with digital tools', where: 'CTL Classroom 201 · Level 2', to: '2-201', k: 'ctl', blurb: 'A conversation hosted by the CTL and the Scholars Studio.' },
       { day: 'Wednesday, September 1', dayLong: 'Wed Sep 1', time: '4:00 – 5:00 PM', title: 'Library Book Bike Pop-Up', where: '[Pop-up spot posted on LibCal]', k: 'lib', blurb: 'Browse a hand-picked pop-up collection and check books out on the spot. Download the Meescan app first so you can borrow.' },
       { day: 'Thursday, September 2', dayLong: 'Thu Sep 2', time: '6:00 – 8:00 PM', title: 'Puzzle Competition', where: '[Room in the new building TBD] · registration required', k: 'lib', blurb: 'Teams race to finish a 500-piece puzzle, and the first team done takes home a prize package. Team spots are limited, so register on LibCal.' },
-      { day: 'Thursday, September 2', dayLong: 'Thu Sep 2', time: '6:00 – 8:00 PM', title: '[Level 4 event title]', where: 'Café seating · Level 4', k: 'l4', blurb: '[Description from the College calendar listing.]' }
+      { day: 'Thursday, September 2', dayLong: 'Thu Sep 2', time: '6:00 – 8:00 PM', title: '[Level 4 event title]', where: 'Café seating · Level 4', to: '4-400', k: 'l4', blurb: '[Description from the College calendar listing.]' }
     ];
     const f = this.state.filter;
     const filters = [['all', 'All events', '#0F1012'], ['lib', 'Library', '#D42121'], ['ctl', 'CTL', '#294878'], ['l4', 'Level 4', '#9F8B76']].map(([k, label, dot]) => ({
@@ -38,7 +38,7 @@ class Screen extends DCLogic {
       return { ...e, ...SRC[e.k], head, bd: e.i === this.state.sel ? '#D42121' : '#FFFFFF', pick: () => this.setState({ sel: e.i }) };
     });
     const s = EV[this.state.sel] || EV[0];
-    return { filters, rows, sel: { ...s, ...SRC[s.k] } };
+    return { filters, rows, sel: { ...s, ...SRC[s.k], wayHref: s.to ? '#/directions/' + s.to : '#/maps' } };
   }
 }
 
@@ -100,7 +100,7 @@ Screen.prototype.template = function (v) {
         <div style="color: #4A484A">${v.sel.where}</div>
       </div>
       <div style="font-size: 19px; line-height: 1.45; color: #4A484A">${v.sel.blurb}</div>
-      <a href="#/directions" style="height: 64px; border-radius: 999px; background: #0F1012; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 22px; font-weight: 700">
+      <a href=${v.sel.wayHref} style="height: 64px; border-radius: 999px; background: #0F1012; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 22px; font-weight: 700">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.4-6.5-11a6.5 6.5 0 0 1 13 0c0 5.6-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>
         Show me the way
       </a>

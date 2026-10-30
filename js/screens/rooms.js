@@ -38,6 +38,7 @@ class Screen extends DCLogic {
       ...selRoom,
       statusLong: selRoom.open ? 'Open now · free until ' + selRoom.until : 'In use · free at ' + selRoom.until,
       statusColor: selRoom.open ? '#294878' : '#4A484A',
+      wayHref: '#/directions/' + selRoom.level + '-' + selRoom.num,
       blocks: selRoom.blocks.map(b => ({ left: Math.round((b[0] - 8) * PXH), width: Math.round((b[1] - b[0]) * PXH) }))
     };
     const sizes = [['any', 'Any'], ['small', '2–4'], ['mid', '4–6'], ['large', '8+']].map(([k, label]) => ({ label, ...chip(s.size === k), pick: () => this.setState({ size: k }) }));
@@ -158,7 +159,7 @@ Screen.prototype.template = function (v) {
           <div style="font-size: 18px; line-height: 1.4; color: #4A484A">Sign in with your Davidson account to reserve. The panel outside the room updates right away.</div>
         </div>
       </div>
-      <a href="#/directions" style="height: 68px; border-radius: 999px; background: #0F1012; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 23px; font-weight: 700">
+      <a href=${v.sel.wayHref} style="height: 68px; border-radius: 999px; background: #0F1012; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 23px; font-weight: 700">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.4-6.5-11a6.5 6.5 0 0 1 13 0c0 5.6-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>
         Show me the way
       </a>

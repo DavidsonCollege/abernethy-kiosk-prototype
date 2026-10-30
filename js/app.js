@@ -6,17 +6,19 @@ import Staff from './screens/staff.js';
 import Events from './screens/events.js';
 import Maps from './screens/maps.js';
 import Directions from './screens/directions.js';
+import ALIASES from './aliases.js';
 
 const SCREENS = { home: Home, rooms: Rooms, staff: Staff, events: Events, maps: Maps, directions: Directions };
 const IDLE = 60;          // seconds without a touch before the countdown
 const WARN = 15;          // countdown length
-const TOUR = ['3-330', '2-desk', '1-114', '2-251', '4-412', '3-339', '1-142', '2-222', '4-409B', '1-125'];
+const TOUR = ['3-305', '2-desk', '1-104', '2-251', '4-RD', '3-342', '1-127', '2-201', '4-400D', '1-120', '2-LL', '1-100E'];
 const TOUR_STEP = 11;     // seconds per stop
 
 function parseHash() {
   const parts = location.hash.replace(/^#\/?/, '').split('/');
   const route = SCREENS[parts[0]] ? parts[0] : 'home';
-  const dest = route === 'directions' && parts[1] ? decodeURIComponent(parts[1]) : null;
+  let dest = route === 'directions' && parts[1] ? decodeURIComponent(parts[1]) : null;
+  if (dest && ALIASES[dest]) dest = ALIASES[dest];      // a link shared before the October 2026 maps
   return { route, dest };
 }
 
@@ -62,9 +64,9 @@ function About({ onClose }) {
         </ul>
         <h3>What's real and what's a sample</h3>
         <ul>
-          <li>Floor maps and routes come from the construction drawings. Routes keep to right angles, stay at least 3 feet off walls, and change floors by the elevators (step-free) or the central stair.</li>
+          <li>Floor maps and routes come from the library's October 2026 furniture plans. Routes keep to right angles, stay at least 3 feet off walls, and change floors by the elevators (step-free) or the main stair.</li>
           <li>Library events are real programs from the library's LibCal calendar, placed into an opening-week sample. CTL and Level 4 events, hours and room availability are samples.</li>
-          <li>Still to confirm with the library: exactly where the two kiosks stand and which way they face, where the Connections Desk sits, and room numbering. Doors aren't in the drawings, so a route ends at the nearest open edge of a room.</li>
+          <li>Still to confirm with the library: exactly where the two kiosks stand and which way they face, and where the Connections Desk sits. Doors aren't in the drawings, so a route ends at the nearest open edge of a room, or at the entrance of the suite a room sits in.</li>
         </ul>
         <h3>Feedback</h3>
         <p>Ideas and corrections are welcome: JD Mills, Technology & Innovation, <a href="mailto:jdmills@davidson.edu">jdmills@davidson.edu</a>.</p>
